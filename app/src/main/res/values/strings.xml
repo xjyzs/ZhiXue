@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ZhiXue</string>
+    <string name="title_activity_exam">ExamActivity</string>
+    <string name="title_activity_paper">PaperActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_pwd">PwdActivity</string>
+    <string name="title_activity_advanced_login">AdvancedLoginActivity</string>
+</resources>
