@@ -17,31 +17,37 @@
             android:name=".AdvancedLoginActivity"
             android:exported="true"
             android:label="@string/title_activity_advanced_login"
-            android:theme="@style/Theme.ZhiXue" />
+            android:theme="@style/Theme.ZhiXue"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" />
         <activity
             android:name=".PwdActivity"
             android:exported="true"
             android:label="@string/title_activity_pwd"
-            android:theme="@style/Theme.ZhiXue" />
+            android:theme="@style/Theme.ZhiXue"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.ZhiXue" />
+            android:theme="@style/Theme.ZhiXue"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
         <activity
             android:name=".PaperActivity"
             android:exported="true"
             android:label="@string/title_activity_paper"
-            android:theme="@style/Theme.ZhiXue" />
+            android:theme="@style/Theme.ZhiXue"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
         <activity
             android:name=".ExamActivity"
             android:exported="true"
             android:label="@string/title_activity_exam"
-            android:theme="@style/Theme.ZhiXue" />
+            android:theme="@style/Theme.ZhiXue"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.ZhiXue">
+            android:theme="@style/Theme.ZhiXue"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

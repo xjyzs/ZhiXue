@@ -18,14 +18,65 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         androidResources.localeFilters += listOf("zh")
     }
+    signingConfigs {
+        create("release") {
+            storeFile = file("${project.rootDir}/keystore.jks")
+            storePassword = System.getenv("KEY_STORE_PASSWORD") ?: ""
+            keyAlias = System.getenv("KEY_ALIAS") ?: ""
+            keyPassword = System.getenv("KEY_PASSWORD") ?: ""
+            enableV1Signing=false
+        }
+    }
+
+    flavorDimensions += "abi"
+    productFlavors {
+        create("x86") {
+            dimension = "abi"
+            ndk { abiFilters.add("x86") }
+            signingConfig = signingConfigs.getByName("release")
+        }
+        create("x86_64") {
+            dimension = "abi"
+            ndk { abiFilters.add("x86_64") }
+            signingConfig = signingConfigs.getByName("release")
+        }
+        create("arm") {
+            dimension = "abi"
+            ndk { abiFilters.add("armeabi-v7a") }
+            signingConfig = signingConfigs.getByName("release")
+        }
+        create("arm64") {
+            dimension = "abi"
+            ndk { abiFilters.add("arm64-v8a") }
+            signingConfig = signingConfigs.getByName("release")
+        }
+        create("universal") {
+            dimension = "abi"
+            signingConfig = signingConfigs.getByName("release")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
-            isShrinkResources = true
+            isShrinkResources=true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            packaging {
+                resources {
+                    excludes += setOf(
+                        "DebugProbesKt.bin",
+                        "kotlin-tooling-metadata.json",
+                        "okhttp3/**",
+                        "META-INF/*version*"
+                    )
+                }
+            }
+            androidResources {
+                noCompress += setOf("so", "arsc")
+            }
         }
     }
     compileOptions {
@@ -77,4 +128,5 @@ dependencies {
     implementation(libs.coil.compose)
 
     implementation (libs.androidx.material.v161)
+    implementation(libs.subsampling.scale.image.view.androidx)
 }
