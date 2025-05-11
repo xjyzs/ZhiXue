@@ -52,10 +52,13 @@ import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.xjyzs.zhixue.ui.theme.ZhiXueTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
-import kotlin.concurrent.thread
 
 class PaperActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -246,8 +249,8 @@ fun ImageViewerDialog(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        try {
-                            thread {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            try {
                                 val file =
                                     File("${Environment.getExternalStorageDirectory().path}/DCIM/Camera/image_${System.currentTimeMillis()}.jpg")
                                 OkHttpClient().newCall(Request.Builder().url(imageUrl).build())
@@ -259,10 +262,14 @@ fun ImageViewerDialog(
                                             }
                                         } == true
                                     }
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show()
+                                }
+                            } catch (e: Exception) {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show()
+                                }
                             }
-                            Toast.makeText(context, "保存成功", Toast.LENGTH_SHORT).show()
-                        } catch (e: Exception) {
-                            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show()
                         }
                         openDialog = false
                     }) { Text("保存") }
