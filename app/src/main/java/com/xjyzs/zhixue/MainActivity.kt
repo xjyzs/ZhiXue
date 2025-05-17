@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -47,6 +46,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlin.concurrent.thread
+import kotlin.math.ceil
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,6 @@ class MainActivity : ComponentActivity() {
 var token=""
 val mainUrl = "https://ali-bg.zhixue.com/zxbReport/report/getPageAllExamList?pageSize=10&pageIndex="
 var isLoading=true
-var page=1
 var at=""
 var userId=""
 data class ExamsResponse(
@@ -144,17 +143,15 @@ fun ExamList() {
                 context.startActivity(intent)
             }
         }
-        page += 1
     }
     LaunchedEffect(scrollState.value) {
         if (exams.size < 10) {
             delay(200)
         }
         if (!isLoading && scrollState.value == scrollState.maxValue) {
-            get(mainUrl + page + "&token=${token}") { response ->
+            get(mainUrl + ceil((exams.size.toFloat())/10f+1).toInt().toString() + "&token=${token}") { response ->
                 exams += Gson().fromJson(response, ExamsResponse::class.java).result.examInfoList
             }
-            page += 1
         }
     }
     Column(Modifier.verticalScroll(scrollState)) {
@@ -199,9 +196,7 @@ fun get(url: String, onResponse: (String) -> Unit) {
                 val responseData = response.body?.string()
                 onResponse(responseData ?: "No response")
             }
-        } catch (e: Exception) {
-            page-=1
-        }
+        } catch (_: Exception) { }
         isLoading=false
     }
 }
