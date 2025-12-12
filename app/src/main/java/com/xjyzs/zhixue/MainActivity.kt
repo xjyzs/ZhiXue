@@ -89,7 +89,7 @@ fun ExamList() {
     val scrollState = rememberScrollState()
     LaunchedEffect(trigger) {
         isLoading = true
-        get(mainUrl + "1" + "&token=${token}") { response ->
+        get(mainUrl + "1" + "&token=${token}&endSchoolYear=1755187199000&startSchoolYear=1723651200000") { response ->
             exams = Gson().fromJson(response, ExamsResponse::class.java).result.examInfoList
         }
         while (isLoading) {
