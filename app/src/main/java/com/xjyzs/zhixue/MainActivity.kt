@@ -149,7 +149,7 @@ fun ExamList() {
             delay(200)
         }
         if (!isLoading && scrollState.value == scrollState.maxValue) {
-            get(mainUrl + ceil((exams.size.toFloat())/10f+1).toInt().toString() + "&token=${token}") { response ->
+            get(mainUrl + ceil((exams.size.toFloat())/10f+1).toInt().toString() + "&token=${token}&endSchoolYear=1755187199000&startSchoolYear=1723651200000") { response ->
                 exams += Gson().fromJson(response, ExamsResponse::class.java).result.examInfoList
             }
         }
